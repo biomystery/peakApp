@@ -36,10 +36,10 @@ server <- function(input, output, session) {
 
     pd <- read.table("./avgOverlapFC.tab")
     pd.log2 <- log2(subset(pd,apply(pd,1,max)>2)+1)
-    names(pd.log2)<- libs
 
     idx.control <-  grepl("control",libs,ignore.case=T)
-    pd.log2 <- pd.log2[,!idx.control]
+    names(pd.log2)<- libs <-  libs[!idx.control]
+
 
     correlation <- round(cor(pd.log2,method="spearman"), 3)
 
