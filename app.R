@@ -38,7 +38,12 @@ server <- function(input, output, session) {
     pd.log2 <- log2(subset(pd,apply(pd,1,max)>2)+1)
 
     idx.control <-  grepl("control",libs,ignore.case=T)
-    names(pd.log2)<- libs <-  libs[!idx.control]
+    if(sum(idx.control) == length(libs)){
+        names(pd.log2)<- libs
+    }else{
+        names(pd.log2)<- libs <-  libs[!idx.control]
+    }
+
 
 
     correlation <- round(cor(pd.log2,method="spearman"), 3)
