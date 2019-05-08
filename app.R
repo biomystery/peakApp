@@ -29,6 +29,10 @@ server <- function(input, output, session) {
     if(file.exists("./sample_table.csv")){
         libs <- read.csv("./sample_table.csv",stringsAsFactors=F)$Label..for.QC.report.
         exp.type <- read.csv("./sample_table.csv",stringsAsFactors=F)$Experiment.type
+    }else if(file.exists("./sample_table_v2.txt")){
+        tmp<- read.table("./sample_table_v2.txt",stringsAsFactors=F,header=T,check.names=F,sep='\t')
+        libs <- tmp[,"Library Name"]
+        exp.type <- tmp[,"Experiment Type"]
     }else{
 	libs<- unlist(strsplit(readLines("./including_libs.txt"),split = " "))
 	libs <- sub("_S[0-9]+_L[0-9]+","",libs)
