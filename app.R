@@ -28,6 +28,11 @@ server <- function(input, output, session) {
 
     if(file.exists("./sample_table.csv")){
         libs <- read.csv("./sample_table.csv",stringsAsFactors=F)$Label..for.QC.report.
+        exp.type <- read.csv("./sample_table.csv",stringsAsFactors=F)$Experiment.type
+    }else if(file.exists("./sample_table_v2.txt")){
+        tmp<- read.table("./sample_table_v2.txt",stringsAsFactors=F,header=T,check.names=F,sep='\t')
+        libs <- tmp[,"Library Name"]
+        exp.type <- tmp[,"Experiment Type"]
     }else{
         libs <- read.table("./including_libs.txt",stringsAsFactors=F)$V2
     }
@@ -36,13 +41,16 @@ server <- function(input, output, session) {
     pd <- read.table("./avgOverlapFC.tab")
     pd.log2 <- log2(subset(pd,apply(pd,1,max)>2)+1)
 
-    idx.control <-  grepl("control",libs,ignore.case=T)
-    if(sum(idx.control) == length(libs)){
+    if(grepl('atac',exp.type[1],ignore.case=T)){
         names(pd.log2)<- libs
     }else{
-        names(pd.log2)<- libs <-  libs[!idx.control]
+            idx.control <-  grepl("control",libs,ignore.case=T)
+            if(sum(idx.control) == length(libs)){
+                names(pd.log2)<- libs
+            }else{
+                names(pd.log2)<- libs <-  libs[!idx.control]
+            }
     }
-
 
 
     correlation <- round(cor(pd.log2,method="spearman"), 3)
