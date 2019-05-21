@@ -29,8 +29,7 @@ server <- function(input, output, session) {
     if(file.exists("./sample_table.csv")){
         libs <- read.csv("./sample_table.csv",stringsAsFactors=F)$Label..for.QC.report.
     }else{
-	libs<- unlist(strsplit(readLines("./including_libs.txt"),split = " "))
-	libs <- sub("_S[0-9]+_L[0-9]+","",libs)
+        libs <- read.table("./including_libs.txt",stringsAsFactors=F)$V2
     }
 
 
