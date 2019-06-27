@@ -64,7 +64,8 @@ server <- function(input, output, session) {
     hide("loading_page")
 
     output$heat <- renderPlotly({
-        heatmaply(correlation,colors = Reds(n = 9),margins = c(60,100,NA,20))
+        heatmaply(correlation,colors = Reds(n = 9),margins = c(60,100,40,20),
+                  main = "Spearman's correlation matrix")
     })
 
     output$selection <- renderPrint({
